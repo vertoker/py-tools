@@ -1,0 +1,4 @@
+moviepy
+pytube
+wikipedia
+gtts
