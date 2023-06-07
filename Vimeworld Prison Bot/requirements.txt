@@ -1,0 +1,7 @@
+datetime
+subprocess
+PIL
+keyboard
+ctypes
+psutil
+mouse

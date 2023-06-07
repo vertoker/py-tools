@@ -1,0 +1,7 @@
+threading
+easygui
+pyperclip
+PySimpleGUI
+pyfastnoisesimd
+numpy
+tkinter
