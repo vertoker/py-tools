@@ -1,5 +1,7 @@
-import os
+import os, re
 import shutil
+import time
+
 import requests
 
 from os import path as p
@@ -64,22 +66,39 @@ def rename_tracks(directory, tracks):
         old_file = p.join(directory, track)
         track_split = track.split('.')
         url = ya_music_link + track_split[0]
+
+        time.sleep(1.5)
         page = requests.get(url)
+        print(url)
         if not page.status_code == 200:
-            print(url)
             print("Error, code:", page.status_code)
             break
 
         soup = BeautifulSoup(page.text, "html.parser")
-        title1 = soup.find('div', attrs={'class': 'sidebar__title sidebar-track__title deco-type typo-h2'})
-        title2 = title1.find('a', attrs={'class': 'd-link deco-link'}).text
-        authors1 = soup.find('div', attrs={'class': 'sidebar__info sidebar__info-short'})
-        authors2 = authors1.find_all('a', attrs={'class': 'd-link deco-link'})
+        title = soup.find('div', attrs={'class': 'sidebar__title sidebar-track__title deco-type typo-h2'})
+        title = title.find('a', attrs={'class': 'd-link deco-link'}).text
+        authors = soup.find('div', attrs={'class': 'sidebar__info sidebar__info-short'})
+        if authors is None:
+            authors = soup.find('div', attrs={'class': 'sidebar__info'})
+            authors = authors.find_all('a', attrs={'class': 'd-link deco-link'})
+        else:
+            authors = authors.find_all('a', attrs={'class': 'd-link deco-link'})
 
-        authors = ", ".join([author.text for author in authors2])
-        new_name = title2 + " - " + authors + '.' + track_split[1]
+        authors = ", ".join([author.text for author in authors])
+        new_name = title + "- " + authors + '.' + track_split[1]
+        new_name = new_name.replace("\\", "")
+        new_name = new_name.replace("/", "")
+        new_name = new_name.replace(":", "")
+        new_name = new_name.replace("*", "")
+        new_name = new_name.replace("?", "")
+        new_name = new_name.replace("\"", "")
+        new_name = new_name.replace("\'", "")
+        new_name = new_name.replace("<", "")
+        new_name = new_name.replace(">", "")
+        new_name = new_name.replace("|", "")
+        new_name = new_name.replace("+", "")
+
         new_file = p.join(directory, new_name)
-        print(new_file)
         os.renames(old_file, new_file)
         print(new_name)
 
