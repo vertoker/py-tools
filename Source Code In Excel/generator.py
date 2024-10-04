@@ -21,8 +21,13 @@ def get_path():
 def get_all_files_data(path):
     filenames = []
     for x in os.walk(path):
-        filetuple = (x[0], x[2])
-        filenames.append(filetuple)
+        new_filenames = []
+        for y in x[2]:
+            if y.endswith(".cs"):
+                new_filenames.append(y)
+        if len(new_filenames) != 0:
+            filetuple = (x[0], new_filenames)
+            filenames.append(filetuple)
     return filenames
 
 # Returns [(flledirectory, [(counter, name, creationtime, bytesize, linescount, checksum)] )]
