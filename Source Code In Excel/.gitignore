@@ -1,0 +1,13 @@
+
+# Folder for temp source code
+[Ss]ource/
+[Ss]ource[Cc]ode/
+[Ss]ource-[Cc]ode/
+[Cc]ode/
+
+[Bb]uild/
+[Bb]uilds/
+
+# Any .xlsx files
+*.xlsx
+
